@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba con Fetch</title>
+    <link href="estilo.css" rel="stylesheet"> <!-- Pequeña hoja de estilos para dar formato-->
+    <script>
+        const url="http://api.openweathermap.org/data/2.5/weather?q=Montevideo,uy&APPID=aeb6c33f9586a7879558db8413de8d28"; 
+        //dirección de la API. Puede ser la ruta a un archivo json. CREA LA TUYA.
+
+        fetch(url) //Realizamos el fetch que devolverá una promesa
+            .then( respuesta=>respuesta.json()) //Obtenemos una promesa que trataremos como json
+            .then(datos=> { //obtenemos una nueva promesa, pero los datos ya están como json.
+                document.getElementById('coord').innerHTML="<b>La Longitud:</b> " + datos.coord.lon + "<br>" + "<b>La Latitud:</b> " + datos.coord.lat;
+                document.getElementById('weather').innerHTML="<b>Clima:</b> " + datos.weather[0].description;
+               //document.getElementById('moreweather').innerHTML="Más clima: " + datos.weather[1].description;
+                document.getElementById('humidity').innerHTML="<b>Querés la humedad?:</b> " + datos.main.humidity + "%. Vos la pediste. ";
+                document.getElementById('pressure').innerHTML="<b>Querés la presión?:</b> " + datos.main.pressure + "hPa.";
+                document.getElementById('wind').innerHTML="<b>Sopla a:</b> " + datos.wind.speed + " Kms/h";
+                document.getElementById('ciudad').innerHTML= datos.name + ", " + datos.sys.country; //escribo los datos del país
+                document.getElementById('temp').innerHTML=(datos.main.temp -273.15).toFixed(1) + "º";//escribo la temperatura. la convierto de kelvin a celsius
+                document.getElementById('imagen').src="http://openweathermap.org/img/wn/"+ datos.weather[0].icon +".png" //imagen
+            })
+            .catch( error => alert("Hubo un error: " + error));
+    </script>
+</head>
+<body>
+    <h1>
+        Clima
+    </h1>
+    <div>
+        <span id="coord"></span><br>
+        <span id="weather"></span><br>
+        <!--<span id="moreweather"></span><br>-->
+        <span id="humidity"></span><br>
+        <span id="pressure"></span><br>
+        <span id="wind"></span><br>
+        <span id="ciudad"></span><br>
+        <span id="temp"> </span>
+        <img id="imagen" src="">
+    </div>
+</body>
+</html>
